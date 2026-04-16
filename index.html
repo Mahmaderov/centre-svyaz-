@@ -436,20 +436,52 @@ function openModal(){
   document.getElementById("overlay").onclick=e=>{if(e.target===document.getElementById("overlay"))closeModal()};
 }
 function closeModal(){document.getElementById("overlay").classList.remove("on")}
-function submitForm(){
+async function submitForm(){
   const name=document.getElementById("fn").value.trim();
   const phone=document.getElementById("fp").value.trim();
   if(!name){document.getElementById("fn").style.borderColor="#ef4444"}
   if(!phone){document.getElementById("fp").style.borderColor="#ef4444"}
   if(!name||!phone)return;
   const n=numbers.find(x=>x.id===selected);
+
+  const BOT_TOKEN="8685269996:AAFmg0msNZNERXTxg06Y3xkI_x2ZnvM6eZE";
+  const CHAT_ID="443923114";
+  const msg="📱 Новая заявка!\n\n"
+    +"📞 Номер: "+n.number+"\n"
+    +"🏢 Оператор: "+n.op+"\n"
+    +"⭐ Категория: "+TIER_NAME[n.tier]+"\n"
+    +"💰 Цена: "+fmt(n.price)+"\n\n"
+    +"👤 Имя: "+name+"\n"
+    +"📲 Контакт: "+phone;
+
   document.getElementById("modal").innerHTML=`
     <div class="ok-state">
-      <div class="ok-icon">✅</div>
-      <h3>Заявка принята!</h3>
-      <p>Уважаемый <strong>${name}</strong>,<br>ваша заявка на номер <strong>${n.number}</strong> принята.<br>Свяжемся по номеру ${phone}.</p>
-      <br><button class="btn-ok" onclick="closeModal()" style="max-width:140px;margin:0 auto;display:block">Закрыть</button>
+      <div class="ok-icon">⏳</div>
+      <h3>Отправляем заявку...</h3>
     </div>`;
+
+  try{
+    await fetch("https://api.telegram.org/bot"+BOT_TOKEN+"/sendMessage",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({chat_id:CHAT_ID,text:msg})
+    });
+    document.getElementById("modal").innerHTML=`
+      <div class="ok-state">
+        <div class="ok-icon">✅</div>
+        <h3>Заявка отправлена!</h3>
+        <p>Уважаемый <strong>${name}</strong>,<br>ваша заявка на номер <strong>${n.number}</strong> принята.<br>Свяжемся по номеру ${phone}.</p>
+        <br><button class="btn-ok" onclick="closeModal()" style="max-width:140px;margin:0 auto;display:block">Закрыть</button>
+      </div>`;
+  }catch(e){
+    document.getElementById("modal").innerHTML=`
+      <div class="ok-state">
+        <div class="ok-icon">✅</div>
+        <h3>Заявка принята!</h3>
+        <p>Уважаемый <strong>${name}</strong>,<br>ваша заявка на номер <strong>${n.number}</strong> принята.<br>Свяжемся по номеру ${phone}.</p>
+        <br><button class="btn-ok" onclick="closeModal()" style="max-width:140px;margin:0 auto;display:block">Закрыть</button>
+      </div>`;
+  }
 }
 init();
 </script>
