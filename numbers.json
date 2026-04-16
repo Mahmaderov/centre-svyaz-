@@ -6,5 +6,29 @@
     "tier": "platinum",
     "pattern": "Тройки",
     "price": 5000
+  },
+  {
+    "id": 20,
+    "number": "+992 935666666",
+    "op": "Tcell",
+    "tier": "platinum",
+    "pattern": "а",
+    "price": 1000
+  },
+  {
+    "id": 21,
+    "number": "+992 999332211",
+    "op": "Zet",
+    "tier": "gold",
+    "pattern": "3221",
+    "price": 200
+  },
+  {
+    "id": 22,
+    "number": "+992 988556644",
+    "op": "Zet",
+    "tier": "silver",
+    "pattern": "123",
+    "price": 1231
   }
 ]
